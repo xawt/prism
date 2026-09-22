@@ -1,0 +1,21 @@
+{
+  "number": 3,
+  "title": "feat: load system prompt from file at startup",
+  "url": "https://github.com/xawt/cobold-cli/pull/3",
+  "state": "MERGED",
+  "author": {
+    "id": "MDQ6VXNlcjk0ODIxMjg=",
+    "is_bot": false,
+    "login": "xawt",
+    "name": "Jarek"
+  },
+  "createdAt": "2026-04-05T16:43:44Z",
+  "closedAt": "2026-04-05T17:02:28Z",
+  "mergedAt": "2026-04-05T17:02:28Z",
+  "baseRefName": "main",
+  "headRefName": "feat/system-prompt",
+  "labels": [],
+  "additions": 126,
+  "deletions": 3,
+  "changedFiles": 5
+}

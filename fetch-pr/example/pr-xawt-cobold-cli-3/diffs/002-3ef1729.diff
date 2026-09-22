@@ -1,0 +1,136 @@
+diff --git a/Makefile b/Makefile
+index 7d0bb13..cac0a8b 100644
+--- a/Makefile
++++ b/Makefile
+@@ -1,6 +1,7 @@
+ COBC     = cobc
+ COBFLAGS = -x
+-SRCS     = src/main.cob src/env-reader.cob src/context-mgr.cob src/ai-caller.cob
++SRCS     = src/main.cob src/env-reader.cob src/context-mgr.cob \
++           src/ai-caller.cob src/prompt-loader.cob
+ OUT      = dist/cobold
+ 
+ .PHONY: all clean
+diff --git a/src/context-mgr.cob b/src/context-mgr.cob
+index eba9e9f..9f61707 100644
+--- a/src/context-mgr.cob
++++ b/src/context-mgr.cob
+@@ -33,7 +33,7 @@
+            EXIT PROGRAM.
+ 
+       *> Escape CM-CONTENT for embedding in a JSON string value.
+-      *> Handles: \ -> \\  " -> \"  (newline/tab left as-is; rare in input)
++      *> Handles: \ -> \\   " -> \"   newline -> \n
+        ESCAPE-PARA.
+            MOVE SPACES TO WS-ESCAPED
+            MOVE 1 TO WS-DST-IDX
+@@ -51,6 +51,10 @@
+                        MOVE '\' TO WS-ESCAPED(WS-DST-IDX:1)
+                        ADD 1 TO WS-DST-IDX
+                        MOVE '"' TO WS-ESCAPED(WS-DST-IDX:1)
++                   WHEN X"0A"
++                       MOVE '\' TO WS-ESCAPED(WS-DST-IDX:1)
++                       ADD 1 TO WS-DST-IDX
++                       MOVE 'n' TO WS-ESCAPED(WS-DST-IDX:1)
+                    WHEN OTHER
+                        MOVE WS-CHAR TO WS-ESCAPED(WS-DST-IDX:1)
+                END-EVALUATE
+diff --git a/src/main.cob b/src/main.cob
+index 18b4c17..1609290 100644
+--- a/src/main.cob
++++ b/src/main.cob
+@@ -9,6 +9,10 @@
+        01  WS-RUNNING          PIC X VALUE 'Y'.
+        01  WS-AI-RESPONSE      PIC X(2000).
+ 
++      * System prompt
++       01  WS-PROMPT-CONTENT   PIC X(2000).
++       01  WS-PROMPT-STATUS    PIC X.
++
+       * Conversation context
+        01  WS-MESSAGES-JSON    PIC X(16000) VALUE '[]'.
+        01  WS-MSG-COUNT        PIC 99      VALUE 0.
+@@ -27,6 +31,18 @@
+        MAIN-PARA.
+            CALL "ENV-READER" USING WS-API-KEY, WS-MODEL
+ 
++           CALL "PROMPT-LOADER" USING WS-PROMPT-CONTENT
++               WS-PROMPT-STATUS
++           IF WS-PROMPT-STATUS = 'Y'
++               MOVE 'system'          TO WS-MSG-ROLE
++               MOVE WS-PROMPT-CONTENT TO WS-MSG-CONTENT
++               CALL "CONTEXT-MGR" USING
++                   WS-MSG-ROLE
++                   WS-MSG-CONTENT
++                   WS-MESSAGES-JSON
++                   WS-MSG-COUNT
++           END-IF
++
+            DISPLAY BOLD "=========================================" CLR
+            DISPLAY BOLD "   cobold-cli  --  AI agent in COBOL    " CLR
+            DISPLAY BOLD "=========================================" CLR
+diff --git a/src/prompt-loader.cob b/src/prompt-loader.cob
+new file mode 100644
+index 0000000..59cc516
+--- /dev/null
++++ b/src/prompt-loader.cob
+@@ -0,0 +1,59 @@
++       IDENTIFICATION DIVISION.
++       PROGRAM-ID. PROMPT-LOADER.
++
++      *> CALL "PROMPT-LOADER" USING BY REFERENCE PL-CONTENT PL-STATUS
++      *>
++      *> PL-CONTENT  PIC X(2000) -- raw prompt text on return
++      *> PL-STATUS   PIC X       -- 'Y' = loaded OK, 'N' = file not found
++      *>
++      *> Caller is responsible for JSON-escaping (e.g. via CONTEXT-MGR).
++
++       ENVIRONMENT DIVISION.
++       INPUT-OUTPUT SECTION.
++       FILE-CONTROL.
++           SELECT PROMPT-FILE
++               ASSIGN TO 'prompts/system-prompt.txt'
++               ORGANIZATION IS LINE SEQUENTIAL
++               FILE STATUS IS WS-FILE-STATUS.
++
++       DATA DIVISION.
++       FILE SECTION.
++       FD  PROMPT-FILE.
++       01  PROMPT-RECORD       PIC X(500).
++
++       WORKING-STORAGE SECTION.
++       01  WS-FILE-STATUS      PIC XX.
++       01  WS-EOF              PIC X.
++       01  WS-PTR              PIC 9(4).
++
++       LINKAGE SECTION.
++       01  PL-CONTENT          PIC X(2000).
++       01  PL-STATUS           PIC X.
++
++       PROCEDURE DIVISION USING PL-CONTENT PL-STATUS.
++
++       MAIN-PARA.
++           MOVE SPACES TO PL-CONTENT
++           MOVE 'N'    TO WS-EOF
++           MOVE 1      TO WS-PTR
++
++           OPEN INPUT PROMPT-FILE
++           IF WS-FILE-STATUS NOT = "00"
++               MOVE 'N' TO PL-STATUS
++               EXIT PROGRAM
++           END-IF
++
++           PERFORM UNTIL WS-EOF = 'Y'
++               READ PROMPT-FILE
++                   AT END
++                       MOVE 'Y' TO WS-EOF
++                   NOT AT END
++                       STRING FUNCTION TRIM(PROMPT-RECORD) ' '
++                           DELIMITED SIZE
++                           INTO PL-CONTENT WITH POINTER WS-PTR
++               END-READ
++           END-PERFORM
++           CLOSE PROMPT-FILE
++
++           MOVE 'Y' TO PL-STATUS
++           EXIT PROGRAM.

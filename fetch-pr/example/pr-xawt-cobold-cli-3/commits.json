@@ -1,0 +1,47 @@
+[
+  {
+    "authoredDate": "2026-04-05T16:13:33Z",
+    "authors": [
+      {
+        "email": "9482128+xawt@users.noreply.github.com",
+        "id": "MDQ6VXNlcjk0ODIxMjg=",
+        "login": "xawt",
+        "name": "Jarek"
+      }
+    ],
+    "committedDate": "2026-04-05T16:13:33Z",
+    "messageBody": "",
+    "messageHeadline": "feat: add system-prompt file",
+    "oid": "e156d18e15c285b5052b9553a1ecb6f32f0f3bd4"
+  },
+  {
+    "authoredDate": "2026-04-05T16:31:08Z",
+    "authors": [
+      {
+        "email": "9482128+xawt@users.noreply.github.com",
+        "id": "MDQ6VXNlcjk0ODIxMjg=",
+        "login": "xawt",
+        "name": "Jarek"
+      }
+    ],
+    "committedDate": "2026-04-05T16:31:08Z",
+    "messageBody": "",
+    "messageHeadline": "feat: load system prompt",
+    "oid": "3ef1729a97d9245749dcd93b46d2888a08300b72"
+  },
+  {
+    "authoredDate": "2026-04-05T17:01:28Z",
+    "authors": [
+      {
+        "email": "9482128+xawt@users.noreply.github.com",
+        "id": "MDQ6VXNlcjk0ODIxMjg=",
+        "login": "xawt",
+        "name": "Jarek"
+      }
+    ],
+    "committedDate": "2026-04-05T17:01:28Z",
+    "messageBody": "",
+    "messageHeadline": "fix: code review fixes",
+    "oid": "54f480108cc9bff332b707e6d48e3e2713ee1b98"
+  }
+]
