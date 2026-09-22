@@ -1,0 +1,17 @@
+[project]
+name = "prism"
+version = "0.1.0"
+description = "Split a PR diff into what needs human review and what can be handed to a model."
+readme = "README.md"
+authors = [
+    { name = "Jarek", email = "9482128+xawt@users.noreply.github.com" }
+]
+requires-python = ">=3.14"
+dependencies = []
+
+[project.scripts]
+prism = "prism.prism:main"
+
+[build-system]
+requires = ["uv_build>=0.11.21,<0.12.0"]
+build-backend = "uv_build"
