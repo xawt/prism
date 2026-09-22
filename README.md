@@ -10,9 +10,13 @@
 *Split the diff like light through a prism — see instantly what needs your eyes and what you can hand to the model.*
 
 ```
-                    ┌──▶ needs a human's eyes
-   diff   ───▶ ◆ ───┤
-                    └──▶ safe to hand to the model
+                    ╱▏
+        PR     ────╱ ▏────▶ 🔴  needs a human's eyes
+               ───╱  ▏───▶ 🟠
+               ──╱   ▏──▶ 🟡
+                ╱    ▏─▶ 🟢
+               ╱     ▏▶ 🔵  safe to hand to the model
+              ╱      ▏▶ 🟣
 ```
 
 > **Status:** early-stage project, no implementation in this repository yet.
