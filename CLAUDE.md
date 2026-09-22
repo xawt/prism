@@ -22,6 +22,10 @@ Always use `uv`. Never call `pip`, `pip install`, bare `python`, or activate `.v
 | Remove dependency | `uv remove <pkg>` |
 | Install / sync env from lockfile | `uv sync` |
 | One-off tool (not a dependency) | `uvx <tool>` |
+| Lint (with autofix) | `uv run ruff check --fix` |
+| Format | `uv run ruff format` |
+
+After editing Python code, run `uv run ruff check --fix` and `uv run ruff format` before committing. Ruff config lives in `pyproject.toml` under `[tool.ruff]`.
 
 - Dependencies live in `pyproject.toml`; never edit `uv.lock` by hand — let `uv` regenerate it.
 - Commit both `pyproject.toml` and `uv.lock` when dependencies change.
