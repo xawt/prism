@@ -36,10 +36,12 @@ Config lives in `pyproject.toml` under `[tool.ruff]` and `[tool.ty]`.
 
 ## Typing
 
-- Every function in `src/` must have full annotations: all arguments and the return type (`-> None` included). Ruff's `ANN` rules enforce this; `tests/` is exempt.
+- Every function in `src/` must have full annotations: all arguments and the return type (`-> None` included). One exception: `__init__` may omit `-> None` when at least one argument is annotated (`mypy-init-return`). Ruff's `ANN` rules enforce this; `tests/` is exempt.
 - Don't use `Any` (`ANN401`) — use a concrete type, a `Protocol`, or `object`.
 - Use modern syntax: `list[str]`, `X | None`, not `List` / `Optional`.
 - ty warnings fail the check (`error-on-warning`). Don't silence a diagnostic with `# ty: ignore` without a comment explaining why.
+
+## Dependencies
 
 - Dependencies live in `pyproject.toml`; never edit `uv.lock` by hand — let `uv` regenerate it.
 - Commit both `pyproject.toml` and `uv.lock` when dependencies change.
