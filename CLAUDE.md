@@ -24,8 +24,22 @@ Always use `uv`. Never call `pip`, `pip install`, bare `python`, or activate `.v
 | One-off tool (not a dependency) | `uvx <tool>` |
 | Lint (with autofix) | `uv run ruff check --fix` |
 | Format | `uv run ruff format` |
+| Type check | `uv run ty check` |
 
-After editing Python code, run `uv run ruff check --fix` and `uv run ruff format` before committing. Ruff config lives in `pyproject.toml` under `[tool.ruff]`.
+After editing Python code, run all three before committing:
+
+```sh
+uv run ruff check --fix && uv run ruff format && uv run ty check
+```
+
+Config lives in `pyproject.toml` under `[tool.ruff]` and `[tool.ty]`.
+
+## Typing
+
+- Every function in `src/` must have full annotations: all arguments and the return type (`-> None` included). Ruff's `ANN` rules enforce this; `tests/` is exempt.
+- Don't use `Any` (`ANN401`) — use a concrete type, a `Protocol`, or `object`.
+- Use modern syntax: `list[str]`, `X | None`, not `List` / `Optional`.
+- ty warnings fail the check (`error-on-warning`). Don't silence a diagnostic with `# ty: ignore` without a comment explaining why.
 
 - Dependencies live in `pyproject.toml`; never edit `uv.lock` by hand — let `uv` regenerate it.
 - Commit both `pyproject.toml` and `uv.lock` when dependencies change.
