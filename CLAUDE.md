@@ -5,7 +5,8 @@
 Prism — a CLI that splits a PR diff into a checklist: what needs a human's eyes vs. what can be handed to a model. See `README.md`.
 
 - Package sources: `src/prism/` (src-layout)
-- Entry point: `prism.prism:main` (`src/prism/prism.py`)
+- Entry point: `prism.cli:main` (`src/prism/cli.py`)
+- `cli.py` is a thin layer: it parses arguments, calls other modules and prints results. Functionality lives in separate modules in `src/prism/`, not in `cli.py`.
 - `skills/` holds standalone Claude skills (e.g. `fetch-pr`) — not part of the Python package.
 
 ## Python tooling: uv only
