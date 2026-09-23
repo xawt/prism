@@ -1,3 +1,4 @@
-from prism.prism import main
+from prism.cli import main
 
-main()
+if __name__ == "__main__":
+    main()
