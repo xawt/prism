@@ -1,4 +1,8 @@
+from prism import config
+
+
 def main() -> None:
+    config.load_env()
     print("Hello from prism!")
 
 

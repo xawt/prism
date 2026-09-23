@@ -7,7 +7,9 @@ authors = [
     { name = "Jarek", email = "9482128+xawt@users.noreply.github.com" }
 ]
 requires-python = ">=3.14"
-dependencies = []
+dependencies = [
+    "python-dotenv>=1.2.3",
+]
 
 [project.scripts]
 prism = "prism.cli:main"

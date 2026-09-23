@@ -28,6 +28,30 @@ Goal: the reviewer spends time on the parts that actually need it, instead of re
 
 Prism is designed so the analysis engine (Jev vs. classic LLM) is interchangeable — the choice of engine shouldn't change the format of the output checklist.
 
+## Configuration
+
+Prism needs API keys for the engines it uses. A key is only required when its engine is actually used.
+
+| Variable | Used by |
+|---|---|
+| `JEV_API_KEY` | Jev (TypeSafe AI) |
+| `OPENROUTER_API_KEY` | classic LLMs (Claude, GPT, …) via OpenRouter |
+
+**Locally:** copy `.env.example` to `.env` and fill in the keys. Variables already exported in your shell take precedence over `.env`.
+
+```sh
+cp .env.example .env
+```
+
+**GitHub Actions:** `.env` is ignored. Add the keys as repository secrets (`gh secret set JEV_API_KEY`, `gh secret set OPENROUTER_API_KEY`) and map them in the workflow:
+
+```yaml
+- run: uv run prism ...
+  env:
+    JEV_API_KEY: ${{ secrets.JEV_API_KEY }}
+    OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+```
+
 ## Output
 
 A checklist split into "needs manual review" and "can be verified by a model" sections, ready to paste as a PR comment or use locally before sending a review.
