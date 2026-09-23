@@ -52,6 +52,13 @@ cp .env.example .env
     OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
 ```
 
+How keys are resolved:
+
+- An exported variable always wins over `.env`; `.env` only fills in what's missing.
+- `.env` is looked up in the current directory, then its parents — so a stray `.env` higher up (e.g. `~/.env`) can be picked up if the repo has none.
+- A missing `.env` is not an error. A key that is unset *or empty* (`JEV_API_KEY=`) is only reported when an engine needs it.
+- CI is detected via `GITHUB_ACTIONS=true` (set by GitHub automatically). Secrets aren't passed to workflows triggered from forks, so those runs will report missing keys.
+
 ## Output
 
 A checklist split into "needs manual review" and "can be verified by a model" sections, ready to paste as a PR comment or use locally before sending a review.
