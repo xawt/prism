@@ -59,6 +59,10 @@ How keys are resolved:
 - A missing `.env` is not an error. A key that is unset *or empty* (`JEV_API_KEY=`) is only reported when an engine needs it.
 - CI is detected via `GITHUB_ACTIONS=true` (set by GitHub automatically). Secrets aren't passed to workflows triggered from forks, so those runs will report missing keys.
 
+## Questions
+
+The questions Prism asks about a PR are defined in `prism.yaml`. The format is described in [docs/input-config.md](docs/input-config.md).
+
 ## Output
 
 A checklist split into "needs manual review" and "can be verified by a model" sections, ready to paste as a PR comment or use locally before sending a review.
