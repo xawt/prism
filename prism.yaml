@@ -1,0 +1,35 @@
+# Example analysis config used during development.
+# Format: docs/input-config.md
+version: 1
+questions:
+  - id: pr_scope
+    per: pr
+    type: choice
+    question: "What is the dominant nature of this change?"
+    options: [feature, fix, refactor, config, docs, mixed]
+    context:
+      - pr.meta
+      - pr.description
+      - commits[*].message
+
+  - id: review_load
+    per: pr
+    type: score
+    range: [1, 5]
+    rubric:
+      1: "Trivial: docs, formatting, config only."
+      3: "Moderate logic change with clear intent."
+      5: "Large or subtle change across public API, needs deep review."
+    question: "How much cognitive effort does reviewing this PR require?"
+    context:
+      - pr.meta
+      - commits[*].diff
+
+  - id: description_matches_diff
+    per: pr
+    type: yesno
+    good: "yes"
+    question: "Does the PR description accurately reflect the actual changes?"
+    context:
+      - pr.description
+      - commits[*].diff
