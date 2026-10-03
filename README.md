@@ -55,9 +55,10 @@ pr-pallets-click-1582/
 |---|---|
 | `--path PATH` | Required. The PR directory. Without other options Prism prints `PR directory: PATH`. |
 | `--list` | Print the PR directory's file tree. Hidden files (such as `.DS_Store`) are skipped. |
+| `--print-pr-files` | Debug: print the structure Prism builds from the PR directory. It shows each file's type, name, size and whether its text has been read. Contents are read only when first used. |
 | `-h`, `--help` | Show the options. |
 
-If `--path` is missing or isn't a directory, Prism prints an error and exits with code 2.
+Prism prints an error and exits with code 2 if `--path` is missing, isn't a directory, or has no `meta.json`, `description.md` or `commits.json`.
 
 ## Configuration
 

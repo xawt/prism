@@ -1,6 +1,7 @@
 import argparse
 from dataclasses import dataclass
 from pathlib import Path
+from pprint import pprint
 
 from prism import config, pr_loader
 
@@ -9,6 +10,8 @@ from prism import config, pr_loader
 class Args:
     path: Path
     list: bool
+    print_pr_files: bool
+    pr_files: pr_loader.PrFiles
 
 
 def parse_args(argv: list[str] | None = None) -> Args:
@@ -23,10 +26,19 @@ def parse_args(argv: list[str] | None = None) -> Args:
         help="PR directory created by the fetch-pr skill",
     )
     parser.add_argument("--list", action="store_true", help="print the PR directory file tree")
+    parser.add_argument(
+        "--print-pr-files",
+        action="store_true",
+        help="print the loaded PR file structure (debug)",
+    )
     ns = parser.parse_args(argv)
     if not ns.path.is_dir():
         parser.error(f"--path: not a directory: {ns.path}")
-    return Args(path=ns.path, list=ns.list)
+    try:
+        pr_files = pr_loader.load_pr(ns.path)
+    except pr_loader.PrLoadError as e:
+        parser.error(f"--path: {e}")
+    return Args(path=ns.path, list=ns.list, print_pr_files=ns.print_pr_files, pr_files=pr_files)
 
 
 def main(argv: list[str] | None = None) -> None:
@@ -34,7 +46,9 @@ def main(argv: list[str] | None = None) -> None:
     args = parse_args(argv)
     if args.list:
         print("\n".join(pr_loader.tree_lines(args.path)))
-    else:
+    if args.print_pr_files:
+        pprint(args.pr_files, sort_dicts=False)
+    if not (args.list or args.print_pr_files):
         print(f"PR directory: {args.path}")
 
 
