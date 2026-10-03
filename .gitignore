@@ -17,3 +17,6 @@ build/
 
 # Local working notes
 internal/
+
+# macOS
+.DS_Store
