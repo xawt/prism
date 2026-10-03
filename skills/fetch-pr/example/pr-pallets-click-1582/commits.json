@@ -1,0 +1,53 @@
+[
+  {
+    "authoredDate": "2020-06-10T22:33:34Z",
+    "authors": [
+      {
+        "email": "mwiza@agripredict.com",
+        "id": "MDQ6VXNlcjk0NzYyODQ=",
+        "login": "0x1za",
+        "name": "Mwiza Simbeye"
+      }
+    ],
+    "committedDate": "2020-06-24T21:03:29Z",
+    "messageBody": "",
+    "messageHeadline": "use importlib.metadata for version_option",
+    "oid": "cb37854c9b43d9fd3c99a3a830f4580517c1b32e"
+  },
+  {
+    "authoredDate": "2020-06-24T20:57:03Z",
+    "authors": [
+      {
+        "email": "davidism@gmail.com",
+        "id": "MDQ6VXNlcjEyNDI4ODc=",
+        "login": "davidism",
+        "name": "David Lord"
+      }
+    ],
+    "committedDate": "2020-06-24T21:03:33Z",
+    "messageBody": "option() returns a decorator, no need for inner decorator function\noptional package_name parameter to skip stack frame detection\npackage_name is available in message format\nuse nonlocal keyword for modifying args from callback\nonly detect version if package name was detected\nshow error if importlib_metadata needs to be installed\nshow error if detected package name isn't an installed package name\nshow detected package name in error when version wasn't detected\nrewrite docs",
+    "messageHeadline": "refactor version_option",
+    "oid": "81ff0aea6c814c7fad7ed4e7c76098a97d6a0fbe"
+  },
+  {
+    "authoredDate": "2020-06-24T22:22:26Z",
+    "authors": [
+      {
+        "email": "davidism@gmail.com",
+        "id": "MDQ6VXNlcjEyNDI4ODc=",
+        "login": "davidism",
+        "name": "David Lord"
+      },
+      {
+        "email": "claudio.jolowicz@cyren.com",
+        "id": "",
+        "login": "",
+        "name": "Claudio Jolowicz"
+      }
+    ],
+    "committedDate": "2020-06-24T22:23:24Z",
+    "messageBody": "Co-authored-by: Claudio Jolowicz <claudio.jolowicz@cyren.com>",
+    "messageHeadline": "version detection works with python -m package",
+    "oid": "b38cb0e2b1372c933ea42975632ee5792cef08cf"
+  }
+]
