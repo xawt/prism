@@ -3,8 +3,8 @@
 Skill + skrypt do pobierania Pull Requestów z GitHuba na dysk, do analizy
 offline. Poniżej decyzje projektowe wypracowane w sesji brainstormingowej i ich
 uzasadnienie — do podglądu implementacja: `scripts/fetch-pr.sh` + `SKILL.md`,
-przykładowy wynik działania: `example/pr-xawt-cobold-cli-3/` (prawdziwy PR,
-łącznie z code review Copilota i wątkiem odpowiedzi).
+przykładowy wynik działania: `example/pr-pallets-click-1582/` (prawdziwy PR,
+łącznie z inline review maintainera i wątkami odpowiedzi autora).
 
 ## Cel
 
@@ -86,6 +86,6 @@ dodatkowo odpala trywialny filtr `jq -n '1'`.
 ## Status
 
 Zaimplementowane i przetestowane end-to-end na prawdziwym PR-cie
-(`xawt/cobold-cli#3`, z code review Copilota i wątkiem odpowiedzi — dobry,
-wymagający test threadingu `in_reply_to`). Wynik tego testu leży w
-`example/pr-xawt-cobold-cli-3/`.
+(`pallets/click#1582`, z inline review maintainera i wątkami odpowiedzi
+autora — dobry, wymagający test threadingu `in_reply_to`). Wynik tego testu
+leży w `example/pr-pallets-click-1582/`.
