@@ -10,7 +10,7 @@
 
 *Split the diff like light through a prism — see instantly what needs your eyes and what you can hand to the model.*
 
-> **Status:** early-stage project, no implementation in this repository yet.
+> **Status:** early-stage project. The CLI can read a PR directory, but there is no analysis yet.
 
 ## How it works
 
@@ -27,6 +27,37 @@ Goal: the reviewer spends time on the parts that actually need it, instead of re
 ## Test engines
 
 Prism is designed so the analysis engine (Jev vs. classic LLM) is interchangeable — the choice of engine shouldn't change the format of the output checklist.
+
+## Usage
+
+Prism works on a PR directory created by the [`fetch-pr`](skills/fetch-pr/SKILL.md) skill. The repo includes one in `skills/fetch-pr/example/`:
+
+```sh
+uv run prism --path skills/fetch-pr/example/pr-pallets-click-1582 --list
+```
+
+```
+pr-pallets-click-1582/
+├── commits.json
+├── description.md
+├── diffs/
+│   ├── 001-cb37854.diff
+│   ├── 002-81ff0ae.diff
+│   └── 003-b38cb0e.diff
+├── discussion/
+│   ├── 001-issue_comment-0x1za.md
+│   …
+│   └── 015-issue_comment-davidism.md
+└── meta.json
+```
+
+| Option | Description |
+|---|---|
+| `--path PATH` | Required. The PR directory. Without other options Prism prints `PR directory: PATH`. |
+| `--list` | Print the PR directory's file tree. Hidden files (such as `.DS_Store`) are skipped. |
+| `-h`, `--help` | Show the options. |
+
+If `--path` is missing or isn't a directory, Prism prints an error and exits with code 2.
 
 ## Configuration
 
