@@ -48,7 +48,7 @@ class PrFile:
 
     def context(self) -> str:
         """The text wrapped in a tag naming its type and file, for use in a prompt."""
-        return f'<{self.type} name="{self.name}">\n{self.text}\n</{self.type}>'
+        return f'<{self.type} name="{self.name}">\n{self.text.rstrip("\n")}\n</{self.type}>'
 
     def unload(self) -> None:
         self._text = None
