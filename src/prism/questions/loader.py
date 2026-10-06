@@ -14,9 +14,7 @@ from prism.questions.model import (
     ScoreQuestion,
     YesNoQuestion,
 )
-
-# Selectors the format supports so far. Moves to the selector registry once contexts are built.
-KNOWN_SELECTORS = frozenset({"pr.meta", "pr.description", "commits[*].message", "commits[*].diff"})
+from prism.selectors import SELECTORS
 
 _COMMON_KEYS = {"id", "per", "type", "question", "context"}
 _TYPE_KEYS = {
@@ -179,7 +177,7 @@ class _QuestionParser:
             if not isinstance(item, str):
                 self.error("context", f"selector must be a string, got {item!r}")
                 ok = False
-            elif item not in KNOWN_SELECTORS:
+            elif item not in SELECTORS:
                 self.error("context", f"unknown selector {item!r}")
                 ok = False
         return tuple(value) if ok else None
