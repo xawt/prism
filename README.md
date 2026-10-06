@@ -54,11 +54,13 @@ pr-pallets-click-1582/
 | Option | Description |
 |---|---|
 | `--path PATH` | Required. The PR directory. Without other options Prism prints `PR directory: PATH`. |
+| `--config PATH` | The question config. Defaults to `prism.yaml` in the current directory. Only read by options that need questions. |
 | `--list` | Print the PR directory's file tree. Hidden files (such as `.DS_Store`) are skipped. |
 | `--print-pr-files` | Debug: print the structure Prism builds from the PR directory. It shows each file's type, name, size and whether its text has been read. Contents are read only when first used. |
+| `--print-questions` | Debug: print the questions loaded from `--config`. |
 | `-h`, `--help` | Show the options. |
 
-Prism prints an error and exits with code 2 if `--path` is missing, isn't a directory, or has no `meta.json`, `description.md` or `commits.json`.
+Prism prints an error and exits with code 2 if `--path` is missing, isn't a directory, or has no `meta.json`, `description.md` or `commits.json`. It does the same if the config breaks any rule in [docs/input-config.md](docs/input-config.md#validation), listing every problem with the question and field it belongs to.
 
 ## Configuration
 

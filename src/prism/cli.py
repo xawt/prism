@@ -3,7 +3,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from pprint import pprint
 
-from prism import config, pr_loader
+from prism import config, pr_loader, questions
 
 
 @dataclass(frozen=True)
@@ -12,6 +12,7 @@ class Args:
     list: bool
     print_pr_files: bool
     pr_files: pr_loader.PrFiles
+    questions: questions.QuestionSet | None
 
 
 def parse_args(argv: list[str] | None = None) -> Args:
@@ -25,11 +26,22 @@ def parse_args(argv: list[str] | None = None) -> Args:
         required=True,
         help="PR directory created by the fetch-pr skill",
     )
+    parser.add_argument(
+        "--config",
+        type=Path,
+        default=Path("prism.yaml"),
+        help="question config (default: prism.yaml)",
+    )
     parser.add_argument("--list", action="store_true", help="print the PR directory file tree")
     parser.add_argument(
         "--print-pr-files",
         action="store_true",
         help="print the loaded PR file structure (debug)",
+    )
+    parser.add_argument(
+        "--print-questions",
+        action="store_true",
+        help="print the questions loaded from --config (debug)",
     )
     ns = parser.parse_args(argv)
     if not ns.path.is_dir():
@@ -38,7 +50,19 @@ def parse_args(argv: list[str] | None = None) -> Args:
         pr_files = pr_loader.load_pr(ns.path)
     except pr_loader.PrLoadError as e:
         parser.error(f"--path: {e}")
-    return Args(path=ns.path, list=ns.list, print_pr_files=ns.print_pr_files, pr_files=pr_files)
+    question_set = None
+    if ns.print_questions:
+        try:
+            question_set = questions.load_questions(ns.config)
+        except questions.QuestionConfigError as e:
+            parser.error(f"--config:\n{e}")
+    return Args(
+        path=ns.path,
+        list=ns.list,
+        print_pr_files=ns.print_pr_files,
+        pr_files=pr_files,
+        questions=question_set,
+    )
 
 
 def main(argv: list[str] | None = None) -> None:
@@ -48,7 +72,9 @@ def main(argv: list[str] | None = None) -> None:
         print("\n".join(pr_loader.tree_lines(args.path)))
     if args.print_pr_files:
         pprint(args.pr_files, sort_dicts=False)
-    if not (args.list or args.print_pr_files):
+    if args.questions:
+        pprint(args.questions, sort_dicts=False)
+    if not (args.list or args.print_pr_files or args.questions):
         print(f"PR directory: {args.path}")
 
 
