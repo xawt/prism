@@ -15,7 +15,7 @@ Always use `uv`. Never call `pip`, `pip install`, bare `python`, or activate `.v
 
 | Task | Command |
 |---|---|
-| Run the CLI | `uv run prism` |
+| Run the CLI | `uv run prism --path <pr_dir>` |
 | Run as module | `uv run python -m prism` |
 | Run any script/command in the env | `uv run <cmd>` |
 | Add dependency | `uv add <pkg>` |
@@ -26,11 +26,12 @@ Always use `uv`. Never call `pip`, `pip install`, bare `python`, or activate `.v
 | Lint (with autofix) | `uv run ruff check --fix` |
 | Format | `uv run ruff format` |
 | Type check | `uv run ty check` |
+| Run tests | `uv run pytest` |
 
-After editing Python code, run all three before committing:
+After editing Python code, run all four before committing:
 
 ```sh
-uv run ruff check --fix && uv run ruff format && uv run ty check
+uv run ruff check --fix && uv run ruff format && uv run ty check && uv run pytest
 ```
 
 Config lives in `pyproject.toml` under `[tool.ruff]` and `[tool.ty]`.
